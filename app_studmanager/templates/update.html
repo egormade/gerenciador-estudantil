@@ -13,13 +13,13 @@
       crossorigin="anonymous"
     />
 
-    <title>Gerenciador Estudantil!</title>
+    <title>Professor Digital | Atualização de dados</title>
   </head>
   <body>
     <!-------------------------------start navbar------------------------------->
     <nav class="navbar navbar-dark shadow-lg bg-primary p-3">
       <div class="container-fluid">
-        <a class="navbar-brand">Navbar</a>
+        <a class="navbar-brand"><img src="/static/logoProfessorDigital.png" width="200" class="d-inline-block align-top"></a>
         <div class="d-flex">
           <a class="nav-link text-white" href="http://">Home</a>
           <a class="nav-link text-white" href="http://">Sobre</a>
@@ -31,28 +31,33 @@
 
     <!-------------------------------start container------------------------------->
     <div class="container d-flex flex-column w-75 mt-5">
-      <h1 class="display-4 text-primary text-center p-3">Cadastro de alunos</h1>
+      <h1 class="display-4 text-primary text-center p-3">Atualização de Dados | <b>{{ aluno.raAluno }}</b></h1>
 
       <!-----------------------------start form-cadastro_aluno------------------------------->
 
       <div class="form-cadastro_aluno p-5 bg-light shadow-lg text-primary">
-        <form class="row g-3" action="{% url 'insertStudent' %}" method="post">
+        <form class="row g-3" action="{% url 'uprec' aluno.idAluno %}" method="post">
             {% csrf_token %}
-          <div class="col-md-6">
+            <div class="col-md-2">
+              <label for="inputName" class="form-label">RA</label>
+              <input type="text" class="form-control" name="raAluno" value="{{ aluno.raAluno }}" id="inputName" disabled="disabled"/>
+            </div>
+
+          <div class="col-md-5">
             <label for="inputName" class="form-label">Nome</label>
-            <input type="text" class="form-control" name="nome_aluno" id="inputName" />
+            <input type="text" class="form-control" name="nomeAluno" value="{{ aluno.nomeAluno }}" id="inputName" />
           </div>
-          <div class="col-md-6">
+          <div class="col-md-5">
             <label for="inputEmail" class="form-label">Email</label>
-            <input type="email" class="form-control" name="email_aluno" id="inputEmail" />
+            <input type="email" class="form-control" name="emailAluno" value="{{ aluno.emailAluno }}" id="inputEmail" />
           </div>
-          <div class="col-3">
+          <div class="col-4">
             <label for="inputDate" class="form-label">Data de nascimento</label>
-            <input type="date" class="form-control" name="nasc_aluno" id="inputDate" />
+            <input type="text" class="form-control" name="nascAluno" value="{{ aluno.nascAluno }}" id="inputDate" />
           </div>
-          <div class="col-3">
+          <div class="col-4">
             <label for="inputTell" class="form-label">Telefone</label>
-            <input type="tel" class="form-control" name="tel_aluno" id="inputTell" />
+            <input type="tel" class="form-control" name="telAluno" value="{{ aluno.telAluno }}" id="inputTell" />
           </div>
           <!-- <div class="col-md-3">
             <label for="inputCity" class="form-label"name="" >RA Aluno</label>
@@ -64,10 +69,10 @@
               disabled
             />
           </div> -->
-          <div class="col-md-3">
+          <div class="col-md-4">
             <label for="inputState" class="form-label">Turma</label>
-            <select name="turma_aluno" id="inputState" class="form-select">
-              <option selected>...</option>
+            <select name="turmaAluno" id="inputState" class="form-select">
+              <option selected value="{{ aluno.nomeAluno }}">Atual - {{ aluno.turmaAluno }}</option>
               <option value="A">A</option>
               <option value="B">B</option>
               <option value="C">C</option>
@@ -77,14 +82,14 @@
           <div class="col-12 text-center">
             
             <button type="submit" class="btn w-25 btn-primary">
-              Cadastrar
+              Atualizar
             </button>
           </div>
         </form>
       </div>
       <!-----------------------------end form-cadastro_aluno------------------------------->
 
-      <div class="lista-alunos mt-5">
+      <!-- <div class="lista-alunos mt-5">
         <div
           class="alert d-flex align-items-center justify-content-between alert-success shadow-lg"
           role="alert"
@@ -95,7 +100,7 @@
           <p>x</p>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- Optional JavaScript; choose one of the two! -->
 
