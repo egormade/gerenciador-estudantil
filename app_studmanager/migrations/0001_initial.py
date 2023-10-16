@@ -14,10 +14,11 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Aluno',
             fields=[
+                ('idAluno', models.AutoField(primary_key=True, serialize=False)),
                 ('raAluno', models.CharField(max_length=6)),
                 ('nomeAluno', models.CharField(max_length=100)),
                 ('emailAluno', models.CharField(default='DEFAULT VALUE', max_length=100)),
-                ('nascAluno', models.DateField(default='0000-00-00')),
+                ('nascAluno', models.DateField(default='0000/00/00')),
                 ('telAluno', models.IntegerField()),
                 ('turmaAluno', models.CharField(max_length=5)),
             ],
