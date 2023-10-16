@@ -1,5 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Aluno
+import pandas as pd
+from datetime import date
 import random
 
 letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
@@ -8,7 +10,6 @@ letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
 numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
 
-# Create your views here.
 def login(request):
     return render(request, 'login.html')
 
@@ -19,7 +20,14 @@ def signup(request):
     return render(request, 'login.html')
 
 def substudent(request):
-    return render(request, 'substudent.html')
+    alunos = {
+            'alunos': Aluno.objects.all().order_by('-idAluno').values()
+        }
+    
+    return render(request, 'substudent.html', alunos)
+
+def teste(request):
+    return render(request, 'teste.html')
 
 def insertStudent(request):
     if request.method == 'POST':
@@ -41,9 +49,58 @@ def insertStudent(request):
 
         new_student = Aluno(raAluno = ra, nomeAluno = nome, emailAluno = email, nascAluno = nasc, telAluno = tel, turmaAluno = turma)
         new_student.save()
+        
+        alunos = {
+             'alunos': Aluno.objects.order_by('-idAluno').values()
+        }
+        
+    return render(request, 'substudent.html', alunos)
 
-        students = {
-            'students': Aluno.objects.all()
+def update(request, idAluno):
+
+    aluno = Aluno.objects.get(idAluno=idAluno)
+    return render(request, 'update.html', {'aluno':aluno})
+
+def uprec(request, idAluno):
+    nomeAluno = request.POST['nomeAluno']
+    emailAluno = request.POST['emailAluno']
+    nascAluno = request.POST['nascAluno']
+    telAluno = request.POST['telAluno']
+    turmaAluno = request.POST['turmaAluno']
+    
+    aluno = Aluno.objects.get(idAluno=idAluno)
+
+    aluno.nomeAluno = nomeAluno
+    aluno.emailAluno = emailAluno
+    aluno.nascAluno = nascAluno
+    aluno.telAluno = telAluno
+    aluno.turmaAluno = turmaAluno
+
+    aluno.save()
+    return redirect("/substudent.html")
+
+
+def delete(request, idAluno):
+
+    alunos = {
+             'alunos': Aluno.objects.order_by('-idAluno').values()
         }
 
-    return render(request, 'substudent.html')
+    aluno = Aluno.objects.get(idAluno=idAluno)
+    aluno.delete()
+    return render(request, 'substudent.html', alunos)
+
+def gerarcsv(request):
+
+    alunos = {
+            'alunos': Aluno.objects.all()
+        }
+
+    hoje = today = date.today()
+
+    data1 = Aluno.objects.all()
+    data2 = data1.values()
+    # print(data2)
+    data2 = pd.DataFrame(data2)
+    data2.to_excel(f"alunoscadastrados_{hoje}.xlsx", index=False)
+    return render(request, 'substudent.html', alunos)
