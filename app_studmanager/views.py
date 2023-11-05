@@ -77,7 +77,11 @@ def uprec(request, idAluno):
     aluno.turmaAluno = turmaAluno
 
     aluno.save()
-    return redirect("/substudent.html")
+    alunos = {
+        'alunos': Aluno.objects.all()
+    }
+
+    return render(request, "substudent.html", alunos)
 
 
 def delete(request, idAluno):
